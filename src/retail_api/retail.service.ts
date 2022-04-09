@@ -55,7 +55,7 @@ export class RetailService {
     if (!resp.data) throw new Error('RETAIL CRM ERROR')
 
     const orders = plainToClass(Order, resp.data.orders as Array<any>)
-    console.log(orders[0].id)
+    //console.log(orders[0].id)
     return orders[0]
   }
 
