@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { AppService } from './app.service'
 import {RetailService} from "./retail_api/retail.service"
+import {Order} from "./retail_api/types"
 
 @Controller()
 export class AppController {
@@ -21,9 +22,10 @@ export class AppController {
   }
 
   @Get('/testFindOrder')
-  testFindOrder(): string {
-    console.log(this.retailService.findOrder('54'))
-    return 'testOrder'
+  testFindOrder(): Promise<Order | null> {
+    const data = this.retailService.findOrder('54')
+    console.log(data)
+    return data
   }
 
 }

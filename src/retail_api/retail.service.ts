@@ -47,7 +47,7 @@ export class RetailService {
   }
 
   async findOrder(id: string): Promise<Order | null> {
-    const filter = {ids:[id]}
+    const filter = {filter:{ids:[id]}}
     const params = serialize(filter, '')
     console.log(params)
     const resp = await this.axios.get('/orders?' + params)
@@ -55,9 +55,8 @@ export class RetailService {
     if (!resp.data) throw new Error('RETAIL CRM ERROR')
 
     const orders = plainToClass(Order, resp.data.orders as Array<any>)
-    console.log(orders[0])
-
-    return null
+    console.log(orders[0].id)
+    return orders[0]
   }
 
   async orderStatuses(): Promise<CrmType[]> {
