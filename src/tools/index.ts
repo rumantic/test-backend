@@ -1,3 +1,5 @@
+import {environment} from "../environments/environment"
+
 export const serialize = (obj, prefix) => {
   const str = []
   let p
@@ -12,5 +14,6 @@ export const serialize = (obj, prefix) => {
       )
     }
   }
-  return str.join('&')
+
+  return str.join('&') + `&apiKey=${environment.RETAIL_KEY}`
 }

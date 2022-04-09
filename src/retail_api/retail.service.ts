@@ -4,6 +4,7 @@ import axios, { AxiosInstance } from 'axios'
 import { ConcurrencyManager } from 'axios-concurrency'
 import { serialize } from '../tools'
 import { plainToClass } from 'class-transformer'
+import {environment} from "../environments/environment"
 
 @Injectable()
 export class RetailService {
@@ -11,9 +12,10 @@ export class RetailService {
 
   constructor() {
     this.axios = axios.create({
-      baseURL: `${process.env.RETAIL_URL}/api/v5`,
+      baseURL: `${environment.RETAIL_URL}/api/v5`,
       timeout: 10000,
-      headers: { },
+      headers: {
+      },
     })
 
     this.axios.interceptors.request.use((config) => {
@@ -45,18 +47,34 @@ export class RetailService {
   }
 
   async findOrder(id: string): Promise<Order | null> {
+    const filter = {ids:[id]}
+    const params = serialize(filter, '')
+    console.log(params)
+    const resp = await this.axios.get('/orders?' + params)
 
+    if (!resp.data) throw new Error('RETAIL CRM ERROR')
+
+    const orders = plainToClass(Order, resp.data.orders as Array<any>)
+    console.log(orders[0])
+
+    return null
   }
 
   async orderStatuses(): Promise<CrmType[]> {
+    const crm_type = new CrmType()
+    return [crm_type]
 
   }
 
   async productStatuses(): Promise<CrmType[]> {
+    const crm_type = new CrmType()
+    return [crm_type]
 
   }
 
   async deliveryTypes(): Promise<CrmType[]> {
+    const crm_type = new CrmType()
+    return [crm_type]
 
   }
 }
